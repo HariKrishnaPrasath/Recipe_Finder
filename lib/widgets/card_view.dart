@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 import '../model/recipes.dart';
 import 'package:provider/provider.dart';
+
+import '../recipe_page.dart';
 
 class CardView extends StatelessWidget {
   final int idx;
@@ -11,8 +14,10 @@ class CardView extends StatelessWidget {
   Widget build(BuildContext context) {
     final recipe = Provider.of<Recipes>(context).popular[idx];
     return InkWell(
-      onTap: () {},
+      onTap: () => Navigator.of(context)
+          .pushNamed(RecipePage.routeName, arguments: recipe),
       child: Card(
+        color: Colors.purple[50],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -27,14 +32,16 @@ class CardView extends StatelessWidget {
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15),
                   ),
-                  child: Image.network(
-                    recipe.imgUrl,
+                  child: Container(
                     height: 250,
                     width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Text('Your error widget...');
-                    },
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: recipe.imgUrl,
+                      ),
+                    ),
                   ),
                 ),
                 Positioned(
@@ -60,41 +67,32 @@ class CardView extends StatelessWidget {
                 ),
               ],
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(20),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //     children: [
-            //       Row(
-            //         children: [
-            //           Icon(Icons.schedule),
-            //           SizedBox(
-            //             width: 6,
-            //           ),
-            //           Text('${duration} min'),
-            //         ],
-            //       ),
-            //       Row(
-            //         children: [
-            //           Icon(Icons.work),
-            //           SizedBox(
-            //             width: 6,
-            //           ),
-            //           Text('$complexityText'),
-            //         ],
-            //       ),
-            //       Row(
-            //         children: [
-            //           Icon(Icons.attach_money),
-            //           SizedBox(
-            //             width: 6,
-            //           ),
-            //           Text('$affordabilityText'),
-            //         ],
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.label),
+                      SizedBox(
+                        width: 6,
+                      ),
+                      Text('${recipe.dishType}'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.dining_sharp),
+                      SizedBox(
+                        width: 6,
+                      ),
+                      Text('${recipe.cuisineType}'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:receipe_app/recipe_page.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../model/recipe.dart';
 import '../model/recipes.dart';
+import '../recipe_page.dart';
 
-class FinalCarView extends StatefulWidget {
+class BookCard extends StatefulWidget {
   final int idx;
-  const FinalCarView({super.key, required this.idx});
+  const BookCard({super.key, required this.idx});
 
   @override
-  State<FinalCarView> createState() => _FinalCarViewState();
+  State<BookCard> createState() => _BookCardState();
 }
 
-class _FinalCarViewState extends State<FinalCarView> {
+class _BookCardState extends State<BookCard> {
   @override
   Widget build(BuildContext context) {
-    List<Recipe> recipe = Provider.of<Recipes>(context).finalIng;
+    final recipe = Provider.of<Recipes>(context).bookmark[widget.idx];
     return InkWell(
       onTap: () => Navigator.of(context)
-          .pushNamed(RecipePage.routeName, arguments: recipe[widget.idx]),
+          .pushNamed(RecipePage.routeName, arguments: recipe),
       child: Card(
+        color: Colors.purple[50],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -43,7 +43,7 @@ class _FinalCarViewState extends State<FinalCarView> {
                       fit: BoxFit.cover,
                       child: FadeInImage.memoryNetwork(
                         placeholder: kTransparentImage,
-                        image: recipe[widget.idx].imgUrl,
+                        image: recipe.imgUrl,
                       ),
                     ),
                   ),
@@ -59,7 +59,7 @@ class _FinalCarViewState extends State<FinalCarView> {
                     width: 330,
                     color: Colors.black54,
                     child: Text(
-                      recipe[widget.idx].label,
+                      recipe.label,
                       style: TextStyle(
                         fontSize: 26,
                         color: Colors.white,
@@ -82,7 +82,7 @@ class _FinalCarViewState extends State<FinalCarView> {
                       SizedBox(
                         width: 6,
                       ),
-                      Text('${recipe[widget.idx].dishType}'),
+                      Text('${recipe.dishType}'),
                     ],
                   ),
                   Row(
@@ -91,7 +91,7 @@ class _FinalCarViewState extends State<FinalCarView> {
                       SizedBox(
                         width: 6,
                       ),
-                      Text('${recipe[widget.idx].cuisineType}'),
+                      Text('${recipe.cuisineType}'),
                     ],
                   ),
                 ],

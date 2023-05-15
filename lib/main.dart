@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:receipe_app/book_mark.dart';
 import 'package:receipe_app/home_page.dart';
+import 'package:receipe_app/login.dart';
 import 'package:receipe_app/model/recipes.dart';
 import 'package:receipe_app/recipe_page.dart';
 import 'package:receipe_app/search.dart';
@@ -29,8 +31,10 @@ class MyApp extends StatelessWidget {
         routes: {
           SearchPage.routeName: (context) => SearchPage(),
           RecipePage.routeName: (context) => RecipePage(),
+          BookMark.routeName: (context) => BookMark(),
+          HomePage.routeName: (context) => HomePage(),
         },
-        home: HomePage(),
+        home: Login(),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:receipe_app/book_mark.dart';
 import 'package:receipe_app/model/recipe.dart';
 
 class Data {
@@ -17,9 +18,10 @@ class Recipes with ChangeNotifier {
   final List<Data> _cuisineTypeList = [];
   final List<Data> _dishTypeList = [];
   final List<Data> _ingredientsList = [];
-  final List<Recipe> _popularRecipe = [];
+  late List<Recipe> _popularRecipe = [];
   List<Recipe> _finalSearchRecipe = [];
   List<String?> ingredient = [];
+  List<Recipe> _bookmark = [];
 
   Future<void> initialFetch() async {
     var url = Uri.parse('https://recipiefilter.pythonanywhere.com/index');
@@ -53,7 +55,6 @@ class Recipes with ChangeNotifier {
     ing.forEach((element) {
       ingredient.add(element?.id);
     });
-    notifyListeners();
   }
 
   Future<List<Recipe>> getReq() async {
@@ -109,7 +110,7 @@ class Recipes with ChangeNotifier {
     var url = Uri.parse('https://recipiefilter.pythonanywhere.com/popular');
     final res1 = await http.get(url);
     final extractedData = json.decode(res1.body) as Map<String, dynamic>;
-
+    _popularRecipe = [];
     for (var element in (extractedData['recipes'] as List<dynamic>)) {
       _popularRecipe.add(
         Recipe(
@@ -142,8 +143,15 @@ class Recipes with ChangeNotifier {
     return _popularRecipe;
   }
 
-  List<Recipe> finalIng() {
-    _finalSearchRecipe = _finalSearchRecipe;
+  List<Recipe> get finalIng {
     return _finalSearchRecipe;
+  }
+
+  void add(Recipe dish) {
+    _bookmark.add(dish);
+  }
+
+  List<Recipe> get bookmark {
+    return _bookmark;
   }
 }
