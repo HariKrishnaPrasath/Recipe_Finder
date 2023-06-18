@@ -35,154 +35,150 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          actions: [
-            IconButton(
-              color: Colors.purple,
-              onPressed: () =>
-                  Navigator.of(context).pushNamed(BookMark.routeName),
-              icon: Icon(Icons.bookmark),
-            ),
-          ],
-          elevation: 1,
-          backgroundColor: Colors.purple[100],
-          title: Text('Recipe Finder', style: TextStyle(color: Colors.purple)),
-        ),
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: height * 0.06,
-                    padding: EdgeInsets.only(left: 17, top: 13),
-                    child: const Text(
-                      'Popular Recipes',
-                      style: TextStyle(
-                        color: Colors.purple,
-                        fontSize: 23,
-                      ),
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            color: Colors.purple,
+            onPressed: () =>
+                Navigator.of(context).pushNamed(BookMark.routeName),
+            icon: Icon(Icons.bookmark),
+          ),
+        ],
+        elevation: 1,
+        backgroundColor: Colors.purple[100],
+        title: Text('Recipe Finder', style: TextStyle(color: Colors.purple)),
+      ),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: height * 0.06,
+                  padding: EdgeInsets.only(left: 17, top: 13),
+                  child: const Text(
+                    'Popular Recipes',
+                    style: TextStyle(
+                      color: Colors.purple,
+                      fontSize: 23,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-          body: FutureBuilder(
-            future:
-                Provider.of<Recipes>(context, listen: false).popularRecipe(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Recipe>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return CardView(
-                        idx: index,
-                      );
-                    },
-                    itemCount: Provider.of<Recipes>(context).getLength(),
-                  );
-                }
+          ),
+        ],
+        body: FutureBuilder(
+          future: Provider.of<Recipes>(context, listen: false).popularRecipe(),
+          builder:
+              (BuildContext context, AsyncSnapshot<List<Recipe>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return CardView(
+                      idx: index,
+                    );
+                  },
+                  itemCount: Provider.of<Recipes>(context).getLength(),
+                );
               }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
-          ),
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
         ),
-        // Column(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     const Padding(
-        //       padding: EdgeInsets.only(left: 17, top: 13),
-        //       child: Text(
-        //         'Popular Recipes',
-        //         style: TextStyle(
-        //           color: Colors.purple,
-        //           fontSize: 23,
-        //         ),
-        //       ),
-        //     ),
-        //     const SizedBox(
-        //       height: 10,
-        //     ),
-        //     FutureBuilder(
-        //       future:
-        //           Provider.of<Recipes>(context, listen: false).popularRecipe(),
-        //       builder:
-        //           (BuildContext context, AsyncSnapshot<List<Recipe>> snapshot) {
-        //         if (snapshot.connectionState == ConnectionState.done) {
-        //           if (snapshot.hasData) {
-        //             return Expanded(
-        //               child: ListView.builder(
-        //                 itemBuilder: (context, index) {
-        //                   return CardView(
-        //                     idx: index,
-        //                   );
-        //                 },
-        //                 itemCount: Provider.of<Recipes>(context).getLength(),
-        //               ),
-        //             );
-        //           }
-        //         }
-        //         return const Center(
-        //           child: CircularProgressIndicator(),
-        //         );
-        //       },
-        //     ),
-        //   ],
-        // ),
-        // floatingActionButton: FloatingActionButton(
-        //   backgroundColor: Colors.white,
-        //   child: const Icon(
-        //     Icons.search,
-        //     color: Colors.purple,
-        //   ),
-        //   onPressed: () => Navigator.of(context).pushNamed(SearchPage.routeName),
-        // ),
-        // body: _isLoading
-        //     ? const Center(
-        //         child: CircularProgressIndicator(),
-        //       )
-        //     : Column(
-        //         children: [
-        //           Text(
-        //             'Popular Recipes',
-        //             style: TextStyle(
-        //               color: Colors.purple,
-        //               fontSize: 20,
-        //             ),
-        //           ),
-        //           SizedBox(
-        //             height: 10,
-        //           ),
-        //           Expanded(
-        //             child: ListView.builder(
-        //               itemBuilder: (context, index) {
-        //                 return CardView(
-        //                   idx: index,
-        //                 );
-        //               },
-        //               itemCount: Provider.of<Recipes>(context).getLength(),
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.white,
-          child: const Icon(
-            Icons.search,
-            color: Colors.purple,
-          ),
-          onPressed: () =>
-              Navigator.of(context).pushNamed(SearchPage.routeName),
+      ),
+      // Column(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   children: [
+      //     const Padding(
+      //       padding: EdgeInsets.only(left: 17, top: 13),
+      //       child: Text(
+      //         'Popular Recipes',
+      //         style: TextStyle(
+      //           color: Colors.purple,
+      //           fontSize: 23,
+      //         ),
+      //       ),
+      //     ),
+      //     const SizedBox(
+      //       height: 10,
+      //     ),
+      //     FutureBuilder(
+      //       future:
+      //           Provider.of<Recipes>(context, listen: false).popularRecipe(),
+      //       builder:
+      //           (BuildContext context, AsyncSnapshot<List<Recipe>> snapshot) {
+      //         if (snapshot.connectionState == ConnectionState.done) {
+      //           if (snapshot.hasData) {
+      //             return Expanded(
+      //               child: ListView.builder(
+      //                 itemBuilder: (context, index) {
+      //                   return CardView(
+      //                     idx: index,
+      //                   );
+      //                 },
+      //                 itemCount: Provider.of<Recipes>(context).getLength(),
+      //               ),
+      //             );
+      //           }
+      //         }
+      //         return const Center(
+      //           child: CircularProgressIndicator(),
+      //         );
+      //       },
+      //     ),
+      //   ],
+      // ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.white,
+      //   child: const Icon(
+      //     Icons.search,
+      //     color: Colors.purple,
+      //   ),
+      //   onPressed: () => Navigator.of(context).pushNamed(SearchPage.routeName),
+      // ),
+      // body: _isLoading
+      //     ? const Center(
+      //         child: CircularProgressIndicator(),
+      //       )
+      //     : Column(
+      //         children: [
+      //           Text(
+      //             'Popular Recipes',
+      //             style: TextStyle(
+      //               color: Colors.purple,
+      //               fontSize: 20,
+      //             ),
+      //           ),
+      //           SizedBox(
+      //             height: 10,
+      //           ),
+      //           Expanded(
+      //             child: ListView.builder(
+      //               itemBuilder: (context, index) {
+      //                 return CardView(
+      //                   idx: index,
+      //                 );
+      //               },
+      //               itemCount: Provider.of<Recipes>(context).getLength(),
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.search,
+          color: Colors.purple,
         ),
+        onPressed: () => Navigator.of(context).pushNamed(SearchPage.routeName),
       ),
     );
   }
